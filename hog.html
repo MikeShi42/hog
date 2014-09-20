@@ -1,6 +1,8 @@
 <html>
 	<body>
 		<script>		
+			var p0 = {score:0},
+				p1 = {score:0};
 			
 			var GOAL_SCORE = 100;
 			
@@ -23,7 +25,7 @@
 				return diceSum;
 			}
 			
-			function take_turn(rolls, opponent_score){
+			function take_turn(rolls, opponent_score, dice){
 				//Free BAKUNNN! :D
 				if(rolls==0){
 					return Math.abs(Math.floor(opponent_score/10) - opponent_score%10) + 1;
@@ -52,6 +54,49 @@
 				if(bid1 > bid0)
 					return [bid1, bid0, 1];
 			}
+			
+			function play(strat0, strat1){
+				var who = 0;
+				p0.strat = strat0;
+				p1.strat = strat1;
+				while(p0.score < 100 && p1.score < 100){
+					//Define "offensive" player and "defensive" player here
+					var off,def;
+					if(who === 0){
+						off = p0;
+						def = p1;
+					}else{
+						off = p1;
+						def = p0;
+					}
+					
+					var dice = select_dice(p0.score, p1.score);
+					var score = take_turn(off.strat(off.score,def.score), def.score, dice);
+					off.score += score;
+					
+					//Swine swap :D
+					if(off.score === def.score * 2 || def.score === off.score * 2){
+						off.score = def.score + off.score;
+						def.score = off.score - def.score;
+						off.score = off.score - def.score;
+					}
+					
+					//Pass off turn
+					who = 1-who;
+				}
+				return [p0.score, p1.score];
+			}
+			
+			var s0 = function(oScore, dScore){
+				return 5;
+			}
+			
+			var s1 = function(oScore, dScore){
+				return 5;
+			}
+			
+			var fin = play (s0, s1);
+			console.log(fin);
 		</script>
 	</body>
 </html>
