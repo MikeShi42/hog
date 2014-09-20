@@ -1,0 +1,34 @@
+<html>
+	<body>
+		<script>
+			var p1 = {score: 0},
+				p2 = {score: 0};
+			
+		
+			var dice = function(){
+				return Math.floor(Math.random()*6+1);
+			}
+			
+			function roll_dice(rolls, dice){
+				var diceSum = 0;
+				for(var i=0; i<rolls; i++){
+					var outcome = dice();
+					if(outcome == 1)
+						return 1;
+					diceSum += outcome;
+				}
+				return diceSum;
+			}
+			
+			function take_turn(rolls, opponent_score){
+				//Free BAKUNNN! :D
+				if(rolls==0){
+					return Math.abs(Math.floor(opponent_score/10) - opponent_score%10) + 1;
+				}
+				
+				//YUNO FREE BAKUN.
+				return roll_dice(rolls, dice);
+			}
+		</script>
+	</body>
+</html>
