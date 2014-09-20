@@ -1,12 +1,15 @@
 <html>
 	<body>
-		<script>
-			var p1 = {score: 0},
-				p2 = {score: 0};
+		<script>		
 			
-		
-			var dice = function(){
+			var GOAL_SCORE = 100;
+			
+			var six_sided = function(){
 				return Math.floor(Math.random()*6+1);
+			}
+		
+			var four_sided = function(){
+				return Math.floor(Math.random()*4+1);
 			}
 			
 			function roll_dice(rolls, dice){
@@ -28,6 +31,26 @@
 				
 				//YUNO FREE BAKUN.
 				return roll_dice(rolls, dice);
+			}
+			
+			function select_dice(off_score, def_score){
+				if((off_score + def_score) % 7 === 0){
+					return four_sided;
+				}
+				return six_sided;
+			}
+			
+			function bid_for_start(bid0, bid1){
+				if(bid0 === bid1)
+					return [GOAL_SCORE, GOAL_SCORE, 0];
+				if(bid0 === bid1+5)
+					return [10, 0, 0];
+				if(bid1 === bid0+5)
+					return [0, 10, 1];
+				if(bid0 > bid1)
+					return [bid1, bid0, 0];
+				if(bid1 > bid0)
+					return [bid1, bid0, 1];
 			}
 		</script>
 	</body>
